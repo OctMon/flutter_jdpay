@@ -1,4 +1,4 @@
-package com.jianzhi.flutter_jdpay_example;
+package com.jdpay.flutter_jdpay_example;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

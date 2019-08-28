@@ -12,22 +12,26 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+  String _sdkVersion = 'Unknown';
 
   @override
   void initState() {
     super.initState();
+
+    FlutterJdPay.registerService(
+        '7ad8a3d997994f6c26efee6cb2d27cdb', '22294531');
+
     initPlatformState();
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
-    String platformVersion;
+    String sdkVersion;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      platformVersion = await FlutterJdpay.platformVersion;
+      sdkVersion = await FlutterJdPay.getVersion;
     } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
+      sdkVersion = 'Failed to get platform version.';
     }
 
     // If the widget was removed from the tree while the asynchronous platform
@@ -36,7 +40,7 @@ class _MyAppState extends State<MyApp> {
     if (!mounted) return;
 
     setState(() {
-      _platformVersion = platformVersion;
+      _sdkVersion = sdkVersion;
     });
   }
 
@@ -44,11 +48,18 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+        body: Container(
+          margin: EdgeInsets.symmetric(horizontal: 15),
+          child: ListView(
+            children: <Widget>[
+              Center(child: Text('京东支付SDK 版本: $_sdkVersion')),
+              RaisedButton(
+                child: Text('支付'),
+                onPressed: () => FlutterJdPay.pay('1000148966268266494059',
+                    'bb05ce87d5f4c9063eb007e2301c7a83'),
+              ),
+            ],
+          ),
         ),
       ),
     );

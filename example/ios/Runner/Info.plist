@@ -18,8 +18,25 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+    <array>
+    	<dict>
+    		<key>CFBundleTypeRole</key>
+    		<string>Editor</string>
+    		<key>CFBundleURLName</key>
+    		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+    		<key>CFBundleURLSchemes</key>
+    		<array>
+    			<string>jdpauth7ad8a3d997994f6c26efee6cb2d27cdb</string>
+    		</array>
+    	</dict>
+    </array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+    	<string>jdpay</string>
+    </array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

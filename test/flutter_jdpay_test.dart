@@ -7,7 +7,7 @@ void main() {
 
   setUp(() {
     channel.setMockMethodCallHandler((MethodCall methodCall) async {
-      return '42';
+      return '2.4.1';
     });
   });
 
@@ -15,7 +15,7 @@ void main() {
     channel.setMockMethodCallHandler(null);
   });
 
-  test('getPlatformVersion', () async {
-    expect(await FlutterJdpay.platformVersion, '42');
+  test('getVersion', () async {
+    expect(await FlutterJdPay.getVersion, '2.4.1');
   });
 }

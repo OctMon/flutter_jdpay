@@ -1,4 +1,4 @@
-group 'com.jianzhi.flutter_jdpay'
+group 'com.jdpay.flutter_jdpay'
 version '1.0-SNAPSHOT'
 
 buildscript {

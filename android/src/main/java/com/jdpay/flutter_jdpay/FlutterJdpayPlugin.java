@@ -1,4 +1,4 @@
-package com.jianzhi.flutter_jdpay;
+package com.jdpay.flutter_jdpay;
 
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -16,10 +16,19 @@ public class FlutterJdpayPlugin implements MethodCallHandler {
 
   @Override
   public void onMethodCall(MethodCall call, Result result) {
-    if (call.method.equals("getPlatformVersion")) {
-      result.success("Android " + android.os.Build.VERSION.RELEASE);
-    } else {
-      result.notImplemented();
+    switch (call.method) {
+      case "getVersion":
+        result.success("待实现");
+        break;
+      case "registerService":
+        //TODO:待实现
+        break;
+      case "pay":
+        //TODO:待实现
+        break;
+      default:
+        result.notImplemented();
+        break;
     }
   }
 }
