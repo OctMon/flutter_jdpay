@@ -1,5 +1,7 @@
 package com.jdpay.flutter_jdpay;
 
+import android.app.Activity;
+
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -9,12 +11,18 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 import com.jdpaysdk.author.Constants;
 import com.jdpaysdk.author.JDPayAuthor;
 
+import java.util.Map;
+
 /** FlutterJdpayPlugin */
 public class FlutterJdpayPlugin implements MethodCallHandler {
+  private static Activity activity;
+  private static String appId;
+  private static String merchantId;
   /** Plugin registration. */
   public static void registerWith(Registrar registrar) {
     final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_jdpay");
     channel.setMethodCallHandler(new FlutterJdpayPlugin());
+    activity = registrar.activity();
   }
 
   @Override
@@ -22,16 +30,16 @@ public class FlutterJdpayPlugin implements MethodCallHandler {
         JDPayAuthor jdPayAuthor = new JDPayAuthor();
     switch (call.method) {
       case "getVersion":
-//        result.success(jdPayAuthor.getVersionCode(this));
+        result.success(jdPayAuthor.getVersionCode(activity));
         break;
       case "registerService":
+        appId = call.argument("appId");
+        merchantId = call.argument("merchantId");
         break;
       case "pay":
-        String appId = call.argument("appId");
-        String merchantId = call.argument("merchantId");
         String orderId = call.argument("orderId");
         String signData = call.argument("signData");
-//        jdPayAuthor.author(MainActivity.this, orderId, merchantId, appId, signData);
+        jdPayAuthor.author(activity, orderId, merchantId, appId, signData, null);
         result.success(JDPayAuthor.JDPAY_RESULT);
         break;
       default:

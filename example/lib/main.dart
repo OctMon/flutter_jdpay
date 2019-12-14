@@ -55,8 +55,11 @@ class _MyAppState extends State<MyApp> {
               Center(child: Text('京东支付SDK 版本: $_sdkVersion')),
               RaisedButton(
                 child: Text('支付'),
-                onPressed: () => FlutterJdPay.pay('1000148966268266494059',
-                    'bb05ce87d5f4c9063eb007e2301c7a83'),
+                onPressed: () async {
+                  Map result = await FlutterJdPay.pay('1000148966268266494059',
+                      'bb05ce87d5f4c9063eb007e2301c7a83');
+                  print(result);
+                },
               ),
             ],
           ),

@@ -2,6 +2,8 @@
 
 适用于商户App中集成京东支付功能
 
+[京东支付2.0SDK接入步骤](http://payapi.jd.com/docList.html?methodName=1)
+
 ## Getting Started
 
 This project is a starting point for a Flutter
