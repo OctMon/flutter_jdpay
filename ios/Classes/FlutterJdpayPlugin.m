@@ -32,15 +32,22 @@
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-    return [[JDPAuthSDK sharedJDPay] handleOpenURL:url];
+    return [self handleOpenURL:url];
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-    return [[JDPAuthSDK sharedJDPay] handleOpenURL:url];
+    return [self handleOpenURL:url];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    return [[JDPAuthSDK sharedJDPay] handleOpenURL:url];
+    return [self handleOpenURL:url];
+}
+
+-(BOOL)handleOpenURL:(NSURL*)url{
+    if ([url.scheme hasPrefix:@"jdpauth"]) {
+        return [[JDPAuthSDK sharedJDPay] handleOpenURL:url];
+    }
+    return NO;
 }
 
 @end
