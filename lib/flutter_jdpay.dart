@@ -1,18 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-final MethodChannel _channel = const MethodChannel('flutter_jdpay')
-  ..setMethodCallHandler(_handler);
-
-Future<dynamic> _handler(MethodCall methodCall) {
-  if ("onPayResult" == methodCall.method) {
-    print("onPayResult：" + methodCall.arguments);
-  }
-  return Future.value(true);
-}
 
 class FlutterJdPay {
-//  static const MethodChannel _channel = const MethodChannel('flutter_jdpay');
+  static const MethodChannel _channel = const MethodChannel('flutter_jdpay');
 
   static Future<String> get getVersion async {
     final String version = await _channel.invokeMethod('getVersion');
@@ -92,14 +83,7 @@ class FlutterJdPay {
   ///  #define JDP_PAY_AUTH_CANCEL  @"JDP_PAY_CANCEL"
   ///  #define JDP_PAY_AUTH_NONE  @"JDP_PAY_NONE"   //暂无使用
   static Future<Map> pay(String orderId, String signData, {Map extraInfo}) {
-//    return _channel.invokeMethod('pay',
-//        {'orderId': orderId, 'signData': signData, 'extraInfo': extraInfo});
-    return _channel.invokeMethod('pay', {
-      'appId': '7ad8a3d997994f6c26efee6cb2d27cdb',
-      'merchantId': '22294531',
-      'orderId': orderId,
-      'signData': signData,
-      'extraInfo': extraInfo
-    });
+    return _channel.invokeMethod('pay',
+        {'orderId': orderId, 'signData': signData, 'extraInfo': extraInfo});
   }
 }
