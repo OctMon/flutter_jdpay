@@ -1,50 +1,80 @@
 package com.jdpay.flutter_jdpay;
 
 import android.app.Activity;
-
-import io.flutter.plugin.common.MethodCall;
-import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
-import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
+import android.content.Intent;
+import android.widget.Toast;
 
 import com.jdpaysdk.author.Constants;
 import com.jdpaysdk.author.JDPayAuthor;
 
-import java.util.Map;
+import io.flutter.Log;
+import io.flutter.plugin.common.MethodCall;
+import io.flutter.plugin.common.MethodChannel;
+import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
+import io.flutter.plugin.common.MethodChannel.Result;
+import io.flutter.plugin.common.PluginRegistry;
+import io.flutter.plugin.common.PluginRegistry.Registrar;
 
-/** FlutterJdpayPlugin */
-public class FlutterJdpayPlugin implements MethodCallHandler {
-  private static Activity activity;
-  private static String appId;
-  private static String merchantId;
-  /** Plugin registration. */
-  public static void registerWith(Registrar registrar) {
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_jdpay");
-    channel.setMethodCallHandler(new FlutterJdpayPlugin());
-    activity = registrar.activity();
-  }
+/**
+ * FlutterJdpayPlugin
+ */
+public class FlutterJdpayPlugin implements MethodCallHandler, PluginRegistry.ActivityResultListener {
+    private static Activity activity;
+    private static String appId;
+    private static String merchantId;
+    private MethodChannel methodChannel;
 
-  @Override
-  public void onMethodCall(MethodCall call, Result result) {
-        JDPayAuthor jdPayAuthor = new JDPayAuthor();
-    switch (call.method) {
-      case "getVersion":
-        result.success(jdPayAuthor.getVersionCode(activity));
-        break;
-      case "registerService":
-        appId = call.argument("appId");
-        merchantId = call.argument("merchantId");
-        break;
-      case "pay":
-        String orderId = call.argument("orderId");
-        String signData = call.argument("signData");
-        jdPayAuthor.author(activity, orderId, merchantId, appId, signData, null);
-        result.success(JDPayAuthor.JDPAY_RESULT);
-        break;
-      default:
-        result.notImplemented();
-        break;
+    private FlutterJdpayPlugin(Activity activity, MethodChannel channel) {
+        this.activity = activity;
+        this.methodChannel = channel;
     }
-  }
+
+    /**
+     * Plugin registration.
+     */
+    public static void registerWith(Registrar registrar) {
+        final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_jdpay");
+//    channel.setMethodCallHandler(new FlutterJdpayPlugin());
+//    activity = registrar.activity();
+        channel.setMethodCallHandler(new FlutterJdpayPlugin(registrar.activity(), channel));
+        registrar.addActivityResultListener(new FlutterJdpayPlugin(registrar.activity(), channel));
+    }
+
+    @Override
+    public void onMethodCall(MethodCall call, Result result) {
+        JDPayAuthor jdPayAuthor = new JDPayAuthor();
+        switch (call.method) {
+            case "getVersion":
+                result.success(jdPayAuthor.getVersionCode(activity));
+                break;
+            case "registerService":
+                appId = call.argument("appId");
+                merchantId = call.argument("merchantId");
+                break;
+            case "pay":
+                String orderId = call.argument("orderId");
+                String signData = call.argument("signData");
+                Log.e(activity.getLocalClassName(), "appId:" + appId + "，merchantId：" + merchantId);
+                jdPayAuthor.author(activity, orderId, merchantId, appId, signData, null);
+//        result.success(JDPayAuthor.JDPAY_RESULT);
+                break;
+            default:
+                result.notImplemented();
+                break;
+        }
+    }
+
+    @Override
+    public boolean onActivityResult(int requestCode, int resultCode, final Intent data) {
+        if (data != null) {
+            if (Constants.PAY_RESPONSE_CODE == resultCode) {//返回信息接收
+                String result = data.getStringExtra(JDPayAuthor.JDPAY_RESULT);
+                Log.e(activity.getLocalClassName(), "result:" + result);
+//        methodChannel.invokeMethod("onPayResult",result);
+            }
+        } else {
+            Toast.makeText(activity, "返回为NULL", Toast.LENGTH_SHORT).show();
+        }
+        return false;
+    }
 }

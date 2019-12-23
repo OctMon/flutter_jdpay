@@ -1,3 +1,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.jdpay.flutter_jdpay">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <application>
+        <activity android:name="com.jdpaysdk.author.AuthorActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="jdpauth7ad8a3d997994f6c26efee6cb2d27cdb"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="com.jdpaysdk.author.browser.BrowserActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+    </application>
 </manifest>
