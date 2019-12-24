@@ -35,8 +35,8 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <!--jdpauth是固定的后面的数字是appId-->
                 <!--此处是测试使用的，如果用户已经注册需要使用自己注册的appId-->
-                <data android:scheme="jdpauth7ad8a3d997994f6c26efee6cb2d27cdb">
-                </data>
+            <!--    <data android:scheme="jdpauth7ad8a3d997994f6c26efee6cb2d27cdb">
+                </data>-->
             </intent-filter>
         </activity>
     </application>

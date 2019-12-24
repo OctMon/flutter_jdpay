@@ -8,7 +8,7 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="jdpauth7ad8a3d997994f6c26efee6cb2d27cdb"/>
+                <data android:scheme="${JD_PAY_KEY}"/>
             </intent-filter>
         </activity>
         <activity android:name="com.jdpaysdk.author.browser.BrowserActivity"
