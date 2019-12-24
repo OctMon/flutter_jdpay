@@ -2,8 +2,25 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
+StreamController<String> _responsePayResultController =
+new StreamController.broadcast();
+
+///Response from payment
+Stream<String> get responsePayResult => _responsePayResultController.stream;
+
+final MethodChannel _channel = const MethodChannel('flutter_jdpay')
+  ..setMethodCallHandler(_handler);
+
+Future<dynamic> _handler(MethodCall methodCall) {
+  if ("onPayResult" == methodCall.method) {
+    print("onPayResult：" + methodCall.arguments);
+    _responsePayResultController.add(methodCall.arguments);
+  }
+  return Future.value(true);
+}
+
 class FlutterJdPay {
-  static const MethodChannel _channel = const MethodChannel('flutter_jdpay');
+//  static const MethodChannel _channel = const MethodChannel('flutter_jdpay');
 
   static Future<String> get getVersion async {
     final String version = await _channel.invokeMethod('getVersion');

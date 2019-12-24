@@ -70,7 +70,7 @@ public class FlutterJdpayPlugin implements MethodCallHandler, PluginRegistry.Act
             if (Constants.PAY_RESPONSE_CODE == resultCode) {//返回信息接收
                 String result = data.getStringExtra(JDPayAuthor.JDPAY_RESULT);
                 Log.e(activity.getLocalClassName(), "result:" + result);
-//        methodChannel.invokeMethod("onPayResult",result);
+                methodChannel.invokeMethod("onPayResult", result);
             }
         } else {
             Toast.makeText(activity, "返回为NULL", Toast.LENGTH_SHORT).show();
