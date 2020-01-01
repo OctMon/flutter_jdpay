@@ -19,6 +19,10 @@ class FlutterJdPay {
 
   Stream<Map> get response => _responsePayResultController.stream;
 
+  dispose() {
+    _responsePayResultController.close();
+  }
+
   Future<String> get getVersion async {
     final String version = await _channel.invokeMethod('getVersion');
     return version;
