@@ -12,7 +12,7 @@
         android:label="flutter_jdpay_example"
         android:icon="@mipmap/ic_launcher"
         tools:replace="android:label"
-        tools:ignore="MissingTranslation">
+        tools:ignore="GoogleAppIndexingWarning,MissingTranslation">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -33,10 +33,6 @@
 
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <!--jdpauth是固定的后面的数字是appId-->
-                <!--此处是测试使用的，如果用户已经注册需要使用自己注册的appId-->
-                <data android:scheme="jdpauth7ad8a3d997994f6c26efee6cb2d27cdb">
-                </data>
             </intent-filter>
         </activity>
     </application>

@@ -16,6 +16,6 @@ void main() {
   });
 
   test('getVersion', () async {
-    expect(await FlutterJdPay.getVersion, '2.4.1');
+    expect(await FlutterJdPay().getVersion, '2.4.1');
   });
 }

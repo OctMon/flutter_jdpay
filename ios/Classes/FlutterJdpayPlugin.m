@@ -1,9 +1,11 @@
 #import "FlutterJdpayPlugin.h"
 #import "JDPAuthSDK.h"
 
+FlutterMethodChannel* channel;
+
 @implementation FlutterJdpayPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-    FlutterMethodChannel* channel = [FlutterMethodChannel
+    channel = [FlutterMethodChannel
                                      methodChannelWithName:@"flutter_jdpay"
                                      binaryMessenger:[registrar messenger]];
     FlutterJdpayPlugin* instance = [[FlutterJdpayPlugin alloc] init];
@@ -24,7 +26,7 @@
         NSString *signData = call.arguments[@"signData"];
         NSDictionary *extraInfo = call.arguments[@"extraInfo"];
         [[JDPAuthSDK sharedJDPay] payWithViewController:controller orderId:orderId signData:signData extraInfo:[extraInfo isKindOfClass:NSNull.self] ? nil : extraInfo completion:^(NSDictionary *resultDict) {
-            result(resultDict);
+            [channel invokeMethod:@"onPayResult" arguments:resultDict];
         }];
     } else {
         result(FlutterMethodNotImplemented);

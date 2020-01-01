@@ -39,6 +39,9 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [
+                JD_PAY_APP_ID: "jdpauth7ad8a3d997994f6c26efee6cb2d27cdb", // jdpauth是固定的,后面的数字是appId
+        ]
     }
 
     buildTypes {

@@ -1,11 +1,25 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/services.dart';
 
 class FlutterJdPay {
-  static const MethodChannel _channel = const MethodChannel('flutter_jdpay');
+  static final MethodChannel _channel = MethodChannel('flutter_jdpay')
+    ..setMethodCallHandler((methodCall) {
+      if ("onPayResult" == methodCall.method) {
+        _responsePayResultController.add(methodCall.arguments is Map
+            ? methodCall.arguments
+            : jsonDecode(methodCall.arguments));
+      }
+      return Future.value(true);
+    });
 
-  static Future<String> get getVersion async {
+  static StreamController<Map> _responsePayResultController =
+      new StreamController.broadcast();
+
+  Stream<Map> get response => _responsePayResultController.stream;
+
+  Future<String> get getVersion async {
     final String version = await _channel.invokeMethod('getVersion');
     return version;
   }
@@ -13,7 +27,7 @@ class FlutterJdPay {
   /// 京东支付注册服务
   /// appId       注册的appId
   /// merchantId  注册的商户号
-  static registerService(String appId, String merchantId) {
+  static void registerService(String appId, String merchantId) {
     _channel.invokeMethod(
         'registerService', {'appId': appId, 'merchantId': merchantId});
   }
@@ -82,8 +96,8 @@ class FlutterJdPay {
   ///  #define JDP_PAY_AUTH_FAIL  @"JDP_PAY_FAIL"
   ///  #define JDP_PAY_AUTH_CANCEL  @"JDP_PAY_CANCEL"
   ///  #define JDP_PAY_AUTH_NONE  @"JDP_PAY_NONE"   //暂无使用
-  static Future<Map> pay(String orderId, String signData, {Map extraInfo}) {
-    return _channel.invokeMethod('pay',
+  void pay(String orderId, String signData, {Map extraInfo}) async {
+    _channel.invokeMethod('pay',
         {'orderId': orderId, 'signData': signData, 'extraInfo': extraInfo});
   }
 }
